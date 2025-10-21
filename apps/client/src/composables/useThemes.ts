@@ -15,6 +15,39 @@ import { PREDEFINED_THEME_NAMES, COLOR_REGEX, RGBA_REGEX } from '../types/theme'
 
 // Predefined themes configuration
 const PREDEFINED_THEMES: Record<ThemeName, PredefinedTheme> = {
+  clean: {
+    name: 'clean',
+    displayName: 'Clean',
+    description: 'Minimalist monochromatic theme with clean lines',
+    cssClass: 'theme-clean',
+    preview: { primary: '#f8f8f8', secondary: '#ffffff', accent: '#2d3748' },
+    colors: {
+      primary: '#2d3748',
+      primaryHover: '#1a202c',
+      primaryLight: '#4a5568',
+      primaryDark: '#1a202c',
+      bgPrimary: '#f8f8f8',
+      bgSecondary: '#f0f0f0',
+      bgTertiary: '#ffffff',
+      bgQuaternary: '#e8e8e8',
+      textPrimary: '#1a202c',
+      textSecondary: '#2d3748',
+      textTertiary: '#4a5568',
+      textQuaternary: '#718096',
+      borderPrimary: '#e2e8f0',
+      borderSecondary: '#cbd5e0',
+      borderTertiary: '#a0aec0',
+      accentSuccess: '#38a169',
+      accentWarning: '#d69e2e',
+      accentError: '#e53e3e',
+      accentInfo: '#2d3748',
+      shadow: 'rgba(0, 0, 0, 0.08)',
+      shadowLg: 'rgba(0, 0, 0, 0.15)',
+      hoverBg: 'rgba(0, 0, 0, 0.04)',
+      activeBg: 'rgba(0, 0, 0, 0.08)',
+      focusRing: '#2d3748'
+    }
+  },
   light: {
     name: 'light',
     displayName: 'Light',
@@ -416,7 +449,7 @@ const PREDEFINED_THEMES: Record<ThemeName, PredefinedTheme> = {
 export function useThemes() {
   // State
   const state = ref<ThemeState>({
-    currentTheme: 'light',
+    currentTheme: 'clean',
     customThemes: [],
     isCustomTheme: false,
     isLoading: false,
@@ -583,10 +616,10 @@ export function useThemes() {
     if (index !== -1) {
       state.value.customThemes.splice(index, 1);
       saveCustomThemes();
-      
+
       // Switch to default theme if current theme was deleted
       if (state.value.currentTheme === themeId) {
-        setTheme('light');
+        setTheme('clean');
       }
     }
   };
@@ -706,16 +739,16 @@ export function useThemes() {
   // Initialization
   const initializeTheme = () => {
     loadCustomThemes();
-    
+
     // Load saved theme
     const savedTheme = localStorage.getItem('theme');
-    
+
     if (savedTheme) {
       setTheme(savedTheme);
     } else {
       // Detect system preference
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
+      setTheme(prefersDark ? 'dark' : 'clean');
     }
   };
 
