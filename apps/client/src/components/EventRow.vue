@@ -66,61 +66,62 @@
       <!-- Response UI -->
       <div v-if="event.humanInTheLoop.type === 'question'">
         <!-- Text Input for Questions -->
-        <textarea
+        <Textarea
           v-model="responseText"
-          class="w-full p-3 border-2 border-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none"
+          class="w-full border-2 border-yellow-500 focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none"
           rows="3"
           placeholder="Type your response here..."
           @click.stop
-        ></textarea>
+        />
         <div class="flex justify-end space-x-2 mt-2">
-          <button
+          <Button
             @click.stop="submitResponse"
             :disabled="!responseText.trim() || isSubmitting || hasSubmittedResponse"
-            class="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-bold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed"
+            class="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white shadow-md hover:shadow-lg"
           >
             {{ isSubmitting ? '⏳ Sending...' : '✅ Submit Response' }}
-          </button>
+          </Button>
         </div>
       </div>
 
       <div v-else-if="event.humanInTheLoop.type === 'permission'">
         <!-- Yes/No Buttons for Permissions -->
         <div class="flex justify-end items-center space-x-3">
-          <div v-if="hasSubmittedResponse || event.humanInTheLoopStatus?.status === 'responded'" class="flex items-center px-3 py-2 bg-green-100 dark:bg-green-900/30 rounded-lg border border-green-500">
-            <span class="text-sm font-bold text-green-900 dark:text-green-100">Responded</span>
-          </div>
-          <button
+          <Badge v-if="hasSubmittedResponse || event.humanInTheLoopStatus?.status === 'responded'" variant="default" class="px-3 py-2 bg-green-100 dark:bg-green-900/30 border border-green-500 text-green-900 dark:text-green-100">
+            Responded
+          </Badge>
+          <Button
             @click.stop="submitPermission(false)"
             :disabled="isSubmitting || hasSubmittedResponse"
-            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+            variant="destructive"
+            class="px-6 py-2 shadow-md hover:shadow-lg"
             :class="hasSubmittedResponse ? 'opacity-40 cursor-not-allowed' : ''"
           >
             {{ isSubmitting ? '⏳' : '❌ Deny' }}
-          </button>
-          <button
+          </Button>
+          <Button
             @click.stop="submitPermission(true)"
             :disabled="isSubmitting || hasSubmittedResponse"
-            class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+            class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-lg"
             :class="hasSubmittedResponse ? 'opacity-40 cursor-not-allowed' : ''"
           >
             {{ isSubmitting ? '⏳' : '✅ Approve' }}
-          </button>
+          </Button>
         </div>
       </div>
 
       <div v-else-if="event.humanInTheLoop.type === 'choice'">
         <!-- Multiple Choice Buttons -->
         <div class="flex flex-wrap gap-2 justify-end">
-          <button
+          <Button
             v-for="choice in event.humanInTheLoop.choices"
             :key="choice"
             @click.stop="submitChoice(choice)"
             :disabled="isSubmitting || hasSubmittedResponse"
-            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none"
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white shadow-md hover:shadow-lg"
           >
             {{ isSubmitting ? '⏳' : choice }}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -236,37 +237,39 @@
         <!-- Payload -->
         <div>
           <div class="flex items-center justify-between mb-2">
-            <h4 class="text-base mobile:text-sm font-bold text-[var(--theme-primary)] drop-shadow-sm flex items-center">
+            <h4 class="text-base mobile:text-sm text-[var(--theme-primary)] drop-shadow-sm flex items-center">
               <span class="mr-1.5 text-xl mobile:text-base">📦</span>
               Payload
             </h4>
-            <button
+            <Button
               @click.stop="copyPayload"
-              class="px-3 py-1 mobile:px-2 mobile:py-0.5 text-sm mobile:text-xs font-bold rounded-lg bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-dark)] text-white transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center space-x-1"
+              size="sm"
+              class="bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-dark)] text-white shadow-md hover:shadow-lg"
             >
-              <span>{{ copyButtonText }}</span>
-            </button>
+              {{ copyButtonText }}
+            </Button>
           </div>
           <pre class="text-sm mobile:text-xs text-[var(--theme-text-primary)] bg-[var(--theme-bg-tertiary)] p-3 mobile:p-2 rounded-lg overflow-x-auto max-h-64 overflow-y-auto font-mono border border-[var(--theme-primary)]/30 shadow-md hover:shadow-lg transition-shadow duration-200">{{ formattedPayload }}</pre>
         </div>
         
         <!-- Chat transcript button -->
         <div v-if="event.chat && event.chat.length > 0" class="flex justify-end">
-          <button
+          <Button
             @click.stop="!isMobile && (showChatModal = true)"
-            :class="[
-              'px-4 py-2 mobile:px-3 mobile:py-1.5 font-bold rounded-lg transition-all duration-200 flex items-center space-x-1.5 shadow-md hover:shadow-lg',
-              isMobile 
-                ? 'bg-[var(--theme-bg-quaternary)] cursor-not-allowed opacity-50 text-[var(--theme-text-quaternary)] border border-[var(--theme-border-tertiary)]' 
-                : 'bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-primary-light)] hover:from-[var(--theme-primary-dark)] hover:to-[var(--theme-primary)] text-white border border-[var(--theme-primary-dark)] transform hover:scale-105'
-            ]"
+            :variant="isMobile ? 'outline' : 'default'"
             :disabled="isMobile"
+            :class="[
+              'shadow-md hover:shadow-lg',
+              isMobile
+                ? 'cursor-not-allowed opacity-50'
+                : 'bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-primary-light)] hover:from-[var(--theme-primary-dark)] hover:to-[var(--theme-primary)] text-white'
+            ]"
           >
-            <span class="text-base mobile:text-sm">💬</span>
-            <span class="text-sm mobile:text-xs font-bold drop-shadow-sm">
+            <span class="text-base mobile:text-sm mr-1.5">💬</span>
+            <span class="text-sm mobile:text-xs drop-shadow-sm">
               {{ isMobile ? 'Not available in mobile' : `View Chat Transcript (${event.chat.length} messages)` }}
             </span>
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -286,6 +289,7 @@ import { ref, computed } from 'vue';
 import type { HookEvent, HumanInTheLoopResponse } from '../types';
 import { useMediaQuery } from '../composables/useMediaQuery';
 import ChatTranscriptModal from './ChatTranscriptModal.vue';
+import { Button, Badge, Textarea } from '@/components/ui';
 
 const props = defineProps<{
   event: HookEvent;

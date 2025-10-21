@@ -1,113 +1,91 @@
 <template>
-  <Teleport to="body">
-    <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 mobile:p-0">
-      <!-- Backdrop -->
-      <div 
-        class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
-        @click="close"
-      ></div>
-      
-      <!-- Modal -->
-      <div 
-        class="relative bg-white dark:bg-gray-800 rounded-lg mobile:rounded-none shadow-xl flex flex-col overflow-hidden z-10 mobile:w-full mobile:h-full mobile:fixed mobile:inset-0"
-        :style="{ width: '85vw', height: '85vh' }"
-        :class="{ 'mobile:!w-full mobile:!h-full': true }"
-        @click.stop
-      >
-          <!-- Header -->
-          <div class="flex-shrink-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 mobile:p-3">
-            <div class="flex items-center justify-between mb-4 mobile:mb-2">
-              <h2 class="text-3xl mobile:text-lg font-semibold text-gray-900 dark:text-white">
-                💬 Chat Transcript
-              </h2>
-              <button
-                @click="close"
-                class="p-2 mobile:p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              >
-                <svg class="w-6 h-6 mobile:w-5 mobile:h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+  <Dialog :open="isOpen" @update:open="(open) => !open && close()">
+    <DialogContent class="max-w-[85vw] h-[85vh] mobile:max-w-full mobile:h-full flex flex-col p-0">
+      <DialogHeader class="flex-shrink-0 border-b p-6 mobile:p-3">
+        <DialogTitle class="text-3xl mobile:text-lg">
+          💬 Chat Transcript
+        </DialogTitle>
             
-            <!-- Search and Filters -->
-            <div class="space-y-4">
-              <!-- Search Input -->
-              <div class="flex gap-2">
-                <div class="relative flex-1">
-                  <input
-                    v-model="searchQuery"
-                    @keyup.enter="executeSearch"
-                    type="text"
-                    placeholder="Search transcript..."
-                    class="w-full px-4 py-2 mobile:px-3 mobile:py-2 pl-10 mobile:pl-8 text-lg mobile:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                  >
-                  <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-                <button
-                  @click="executeSearch"
-                  class="px-4 py-2 mobile:px-3 mobile:py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors text-base mobile:text-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
-                >
-                  Search
-                </button>
-                <button
-                  @click="copyAllMessages"
-                  class="px-4 py-2 mobile:px-3 mobile:py-2 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors text-base mobile:text-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
-                  title="Copy all messages as JSON"
-                >
-                  {{ copyAllButtonText }}
-                </button>
-              </div>
-              
-              <!-- Filters -->
-              <div class="flex flex-wrap gap-2 mobile:gap-1 max-h-24 mobile:max-h-32 overflow-y-auto p-2 mobile:p-1 bg-gray-50 dark:bg-gray-900/50 rounded-lg mobile:overflow-x-auto mobile:pb-2">
-                <button
-                  v-for="filter in filters"
-                  :key="filter.type"
-                  @click="toggleFilter(filter.type)"
-                  class="px-4 py-2 mobile:px-3 mobile:py-1.5 rounded-full text-sm mobile:text-xs font-medium transition-colors min-h-[44px] mobile:min-h-[36px] flex items-center whitespace-nowrap"
-                  :class="activeFilters.includes(filter.type) 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'"
-                >
-                  <span class="mr-1">{{ filter.icon }}</span>
-                  {{ filter.label }}
-                </button>
-                
-                <!-- Clear Filters -->
-                <button
-                  v-if="searchQuery || activeSearchQuery || activeFilters.length > 0"
-                  @click="clearSearch"
-                  class="px-4 py-2 mobile:px-3 mobile:py-1.5 rounded-full text-sm mobile:text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50 min-h-[44px] mobile:min-h-[36px] flex items-center whitespace-nowrap"
-                >
-                  Clear All
-                </button>
-              </div>
-              
-              <!-- Results Count -->
-              <div v-if="activeSearchQuery || activeFilters.length > 0" class="text-sm mobile:text-xs text-gray-500 dark:text-gray-400">
-                Showing {{ filteredChat.length }} of {{ chat.length }} messages
-                <span v-if="activeSearchQuery" class="ml-2 font-medium mobile:block mobile:ml-0 mobile:mt-1">
-                  (searching for "{{ activeSearchQuery }}")
-                </span>
-              </div>
+        <!-- Search and Filters -->
+        <div class="space-y-4 mt-4">
+          <!-- Search Input -->
+          <div class="flex gap-2">
+            <div class="relative flex-1">
+              <Input
+                v-model="searchQuery"
+                @keyup.enter="executeSearch"
+                type="text"
+                placeholder="Search transcript..."
+                class="pl-10 mobile:pl-8 text-lg mobile:text-base"
+              />
+              <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </div>
+            <Button
+              @click="executeSearch"
+              class="min-w-[44px] min-h-[44px]"
+            >
+              Search
+            </Button>
+            <Button
+              @click="copyAllMessages"
+              variant="secondary"
+              class="min-w-[44px] min-h-[44px]"
+              :title="'Copy all messages as JSON'"
+            >
+              {{ copyAllButtonText }}
+            </Button>
           </div>
-          
-          <!-- Content -->
-          <div class="flex-1 p-6 mobile:p-3 overflow-hidden flex flex-col">
-            <ChatTranscript :chat="filteredChat" />
+              
+          <!-- Filters -->
+          <div class="flex flex-wrap gap-2 mobile:gap-1 max-h-24 mobile:max-h-32 overflow-y-auto p-2 mobile:p-1 bg-muted rounded-lg mobile:overflow-x-auto mobile:pb-2">
+            <Button
+              v-for="filter in filters"
+              :key="filter.type"
+              @click="toggleFilter(filter.type)"
+              :variant="activeFilters.includes(filter.type) ? 'default' : 'outline'"
+              size="sm"
+              class="rounded-full min-h-[44px] mobile:min-h-[36px] whitespace-nowrap"
+            >
+              <span class="mr-1">{{ filter.icon }}</span>
+              {{ filter.label }}
+            </Button>
+
+            <!-- Clear Filters -->
+            <Button
+              v-if="searchQuery || activeSearchQuery || activeFilters.length > 0"
+              @click="clearSearch"
+              variant="destructive"
+              size="sm"
+              class="rounded-full min-h-[44px] mobile:min-h-[36px] whitespace-nowrap"
+            >
+              Clear All
+            </Button>
+          </div>
+              
+          <!-- Results Count -->
+          <div v-if="activeSearchQuery || activeFilters.length > 0" class="text-sm mobile:text-xs text-muted-foreground">
+            Showing {{ filteredChat.length }} of {{ chat.length }} messages
+            <span v-if="activeSearchQuery" class="ml-2 mobile:block mobile:ml-0 mobile:mt-1">
+              (searching for "{{ activeSearchQuery }}")
+            </span>
           </div>
         </div>
-    </div>
-  </Teleport>
+      </DialogHeader>
+
+      <!-- Content -->
+      <ScrollArea class="flex-1 p-6 mobile:p-3">
+        <ChatTranscript :chat="filteredChat" />
+      </ScrollArea>
+    </DialogContent>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import ChatTranscript from './ChatTranscript.vue';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, Button, Input, ScrollArea } from '@/components/ui';
 
 const props = defineProps<{
   isOpen: boolean;

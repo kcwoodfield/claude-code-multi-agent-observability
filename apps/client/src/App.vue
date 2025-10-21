@@ -34,31 +34,37 @@
           </span>
 
           <!-- Clear Button -->
-          <button
+          <Button
             @click="handleClearClick"
-            class="p-3 mobile:p-1 rounded-lg bg-white/20 hover:bg-white/30 transition-all duration-200 border border-white/30 hover:border-white/50 backdrop-blur-sm shadow-lg hover:shadow-xl"
+            variant="ghost"
+            size="icon"
+            class="bg-white/20 hover:bg-white/30 border border-white/30 hover:border-white/50 backdrop-blur-sm shadow-lg hover:shadow-xl"
             title="Clear events"
           >
             <span class="text-2xl mobile:text-base">🗑️</span>
-          </button>
+          </Button>
 
           <!-- Filters Toggle Button -->
-          <button
+          <Button
             @click="showFilters = !showFilters"
-            class="p-3 mobile:p-1 rounded-lg bg-white/20 hover:bg-white/30 transition-all duration-200 border border-white/30 hover:border-white/50 backdrop-blur-sm shadow-lg hover:shadow-xl"
+            variant="ghost"
+            size="icon"
+            class="bg-white/20 hover:bg-white/30 border border-white/30 hover:border-white/50 backdrop-blur-sm shadow-lg hover:shadow-xl"
             :title="showFilters ? 'Hide filters' : 'Show filters'"
           >
             <span class="text-2xl mobile:text-base">📊</span>
-          </button>
+          </Button>
 
           <!-- Theme Manager Button -->
-          <button
+          <Button
             @click="handleThemeManagerClick"
-            class="p-3 mobile:p-1 rounded-lg bg-white/20 hover:bg-white/30 transition-all duration-200 border border-white/30 hover:border-white/50 backdrop-blur-sm shadow-lg hover:shadow-xl"
+            variant="ghost"
+            size="icon"
+            class="bg-white/20 hover:bg-white/30 border border-white/30 hover:border-white/50 backdrop-blur-sm shadow-lg hover:shadow-xl"
             title="Open theme manager"
           >
             <span class="text-2xl mobile:text-base">🎨</span>
-          </button>
+          </Button>
         </div>
       </div>
     </header>
@@ -147,6 +153,7 @@ import StickScrollButton from './components/StickScrollButton.vue';
 import LivePulseChart from './components/LivePulseChart.vue';
 import ThemeManager from './components/ThemeManager.vue';
 import ToastNotification from './components/ToastNotification.vue';
+import { Button } from './components/ui';
 import AgentSwimLaneContainer from './components/AgentSwimLaneContainer.vue';
 
 // WebSocket connection
