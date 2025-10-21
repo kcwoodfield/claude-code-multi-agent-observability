@@ -1,48 +1,130 @@
 /* Theme System - CSS Custom Properties */
 
-/* Default theme variables (Light theme) */
+/* Default theme variables (Clean theme - minimalist monochromatic) */
 :root {
+  /* Primary colors */
+  --theme-primary: #2d3748;
+  --theme-primary-hover: #1a202c;
+  --theme-primary-light: #4a5568;
+  --theme-primary-dark: #1a202c;
+
+  /* Background colors */
+  --theme-bg-primary: #f8f8f8;
+  --theme-bg-secondary: #f0f0f0;
+  --theme-bg-tertiary: #ffffff;
+  --theme-bg-quaternary: #e8e8e8;
+
+  /* Text colors */
+  --theme-text-primary: #1a202c;
+  --theme-text-secondary: #2d3748;
+  --theme-text-tertiary: #4a5568;
+  --theme-text-quaternary: #718096;
+
+  /* Border colors */
+  --theme-border-primary: #e2e8f0;
+  --theme-border-secondary: #cbd5e0;
+  --theme-border-tertiary: #a0aec0;
+
+  /* Accent colors */
+  --theme-accent-success: #38a169;
+  --theme-accent-warning: #d69e2e;
+  --theme-accent-error: #e53e3e;
+  --theme-accent-info: #2d3748;
+
+  /* Shadow colors */
+  --theme-shadow: rgba(0, 0, 0, 0.08);
+  --theme-shadow-lg: rgba(0, 0, 0, 0.15);
+
+  /* Interactive states */
+  --theme-hover-bg: rgba(0, 0, 0, 0.04);
+  --theme-active-bg: rgba(0, 0, 0, 0.08);
+  --theme-focus-ring: #2d3748;
+
+  /* Theme transitions */
+  --theme-transition: all 0.2s ease-in-out;
+  --theme-transition-fast: all 0.1s ease-in-out;
+}
+
+/* Clean theme - Minimalist monochromatic */
+.theme-clean {
+  /* Primary colors */
+  --theme-primary: #2d3748;
+  --theme-primary-hover: #1a202c;
+  --theme-primary-light: #4a5568;
+  --theme-primary-dark: #1a202c;
+
+  /* Background colors */
+  --theme-bg-primary: #f8f8f8;
+  --theme-bg-secondary: #f0f0f0;
+  --theme-bg-tertiary: #ffffff;
+  --theme-bg-quaternary: #e8e8e8;
+
+  /* Text colors */
+  --theme-text-primary: #1a202c;
+  --theme-text-secondary: #2d3748;
+  --theme-text-tertiary: #4a5568;
+  --theme-text-quaternary: #718096;
+
+  /* Border colors */
+  --theme-border-primary: #e2e8f0;
+  --theme-border-secondary: #cbd5e0;
+  --theme-border-tertiary: #a0aec0;
+
+  /* Accent colors */
+  --theme-accent-success: #38a169;
+  --theme-accent-warning: #d69e2e;
+  --theme-accent-error: #e53e3e;
+  --theme-accent-info: #2d3748;
+
+  /* Shadow colors */
+  --theme-shadow: rgba(0, 0, 0, 0.08);
+  --theme-shadow-lg: rgba(0, 0, 0, 0.15);
+
+  /* Interactive states */
+  --theme-hover-bg: rgba(0, 0, 0, 0.04);
+  --theme-active-bg: rgba(0, 0, 0, 0.08);
+  --theme-focus-ring: #2d3748;
+}
+
+/* Light theme */
+.theme-light {
   /* Primary colors */
   --theme-primary: #3b82f6;
   --theme-primary-hover: #2563eb;
   --theme-primary-light: #dbeafe;
   --theme-primary-dark: #1e40af;
-  
+
   /* Background colors */
   --theme-bg-primary: #ffffff;
   --theme-bg-secondary: #f9fafb;
   --theme-bg-tertiary: #f3f4f6;
   --theme-bg-quaternary: #e5e7eb;
-  
+
   /* Text colors */
   --theme-text-primary: #111827;
   --theme-text-secondary: #374151;
   --theme-text-tertiary: #6b7280;
   --theme-text-quaternary: #9ca3af;
-  
+
   /* Border colors */
   --theme-border-primary: #e5e7eb;
   --theme-border-secondary: #d1d5db;
   --theme-border-tertiary: #9ca3af;
-  
+
   /* Accent colors */
   --theme-accent-success: #10b981;
   --theme-accent-warning: #f59e0b;
   --theme-accent-error: #ef4444;
   --theme-accent-info: #3b82f6;
-  
+
   /* Shadow colors */
   --theme-shadow: rgba(0, 0, 0, 0.1);
   --theme-shadow-lg: rgba(0, 0, 0, 0.25);
-  
+
   /* Interactive states */
   --theme-hover-bg: rgba(0, 0, 0, 0.05);
   --theme-active-bg: rgba(0, 0, 0, 0.1);
   --theme-focus-ring: #3b82f6;
-  
-  /* Theme transitions */
-  --theme-transition: all 0.2s ease-in-out;
-  --theme-transition-fast: all 0.1s ease-in-out;
 }
 
 /* Dark theme */
